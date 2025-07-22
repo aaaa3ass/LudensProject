@@ -27,6 +27,7 @@ public class TurnManager : MonoBehaviour
     public int turnPlayer;
 
     public Character testPlayer;
+    public int moveDistance = 0;
 
     private void Awake()
     {
@@ -45,6 +46,11 @@ public class TurnManager : MonoBehaviour
     public void SetTurnStateMove()
     {
         SetTurnState(TurnState.Move);
+    }
+
+    public void SetMoveDistance(int n)
+    {
+        moveDistance = n;
     }
 
     public void SetTurnState(TurnState newState)
@@ -83,16 +89,24 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator HandleSelect()
     {
-        if (TestButton1 != null)
+        if (TestButton1 != null)    // 버튼 활성화
         {
             TestButton1.interactable = true;
+        }
+        if (TestButton2 != null)    // 버튼 활성화
+        {
+            TestButton2.interactable = true;
         }
         yield break;
     }
     public IEnumerator HandleMove() 
     {
-        testPlayer.move();
-        yield return null;
+        for (int i = 0; i< moveDistance;i++)
+        {
+            testPlayer.move();
+            yield return new WaitForSeconds(testPlayer.moveDuration);
+        }
+
     }
 
 }

@@ -9,6 +9,7 @@ public class TileManager : MonoBehaviour
     public string fileName = "tiles_data";
     public List<List<int>> loadedTiles = new List<List<int>>();
 
+    public GameObject tiles;
     public GameObject tileObject;
 
     void Start()
@@ -80,7 +81,7 @@ public class TileManager : MonoBehaviour
         //Debug.Log($"총 {loadedTiles.Count}개의 행을 로드했습니다.");
     }
 
-    void SetTiles()
+    void SetTiles() // 타일 생성
     {
         int width = 1; // 타일 너비
         int height = 1;// 타일 길이
@@ -94,6 +95,7 @@ public class TileManager : MonoBehaviour
                 if (tile == 1)
                 {
                     GameObject go = Instantiate(tileObject);
+                    go.transform.parent = this.tiles.transform;
                     go.transform.position = new Vector2(column * width, -row * height);
                 }
                 column++;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -23,6 +24,23 @@ public class Character : MonoBehaviour
     public Vector2Int currentPositon = new Vector2Int(1,1); // 현재 위치
     public Vector2Int previousPositon = new Vector2Int(1,0);// 이전 위치 (방향 결정)
 
+    public float ATK;
+    public float HP;
+    public float CRT;
+
+    public List<Weapon> weaponList;
+
+
+
+    void Start()
+    {
+        currentState = CharacterState.Idle; // 대기 상태
+
+        transform.position = new Vector3(currentPositon.x, currentPositon.y * -1, 0); // 시작 위치
+
+        //weaponList[0] = new TestWeapon();
+    }
+
     #region 4방향 이동 벡터 directions
     private static readonly Vector2Int[] directions = new Vector2Int[]
     {
@@ -32,14 +50,7 @@ public class Character : MonoBehaviour
         new Vector2Int(0,1)   // right
     };
     #endregion
-
-    void Start()
-    {
-        currentState = CharacterState.Idle; // 대기 상태
-
-        transform.position = new Vector3(currentPositon.x, currentPositon.y * -1, 0); // 시작 위치
-    }
-
+    #region 이동 관련
     public void move()
     {
         Vector2Int nextPositon = GetNextPosition(currentPositon, previousPositon);
@@ -113,6 +124,7 @@ public class Character : MonoBehaviour
         transform.position = newTarget;             // 정확한 위치에 안착
         currentState = CharacterState.Idle;         // 정지 상태로 설정
     }
+    #endregion
 
     void Update()
     {
