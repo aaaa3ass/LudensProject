@@ -11,7 +11,6 @@ public class TileManager : MonoBehaviour
 
     public GameObject tileObject;
 
-    // Start is called before the first frame update
     void Start()
     {
         LoadTilesFromTextFile();
@@ -78,7 +77,7 @@ public class TileManager : MonoBehaviour
                 loadedTiles.Add(currentRow);
             }
         }
-        Debug.Log($"총 {loadedTiles.Count}개의 행을 로드했습니다.");
+        //Debug.Log($"총 {loadedTiles.Count}개의 행을 로드했습니다.");
     }
 
     void SetTiles()
