@@ -35,24 +35,22 @@ public class Character : MonoBehaviour
 
     void Start()
     {
-        currentState = CharacterState.Idle;
-        transform.position = new Vector3(currentPositon.x, currentPositon.y * -1, 0);
+        currentState = CharacterState.Idle; // 대기 상태
+
+        transform.position = new Vector3(currentPositon.x, currentPositon.y * -1, 0); // 시작 위치
     }
 
     public void move()
     {
         Vector2Int nextPositon = GetNextPosition(currentPositon, previousPositon);
 
-        transform.position = new Vector3(nextPositon.x, nextPositon.y * -1, 0);
+        Vector3 newTargetPos = new Vector3(nextPositon.x, nextPositon.y * -1, 0);
 
+        StartCoroutine(SmoothMove(newTargetPos));   // 이동
+
+        // 위치 갱신
         previousPositon = currentPositon;
         currentPositon = nextPositon;
-
-
-
-        //Vector3 newTargetPos = new Vector3(1,0,0);
-
-        //StartCoroutine(SmoothMove(newTargetPos));
     }
 
     private Vector2Int GetNextPosition(Vector2Int current, Vector2Int previous)
