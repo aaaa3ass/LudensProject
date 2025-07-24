@@ -14,7 +14,6 @@ public enum TurnState
     EndGame
 }
 
-
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance { get; private set; } // ΩÃ±€≈Ê ∆–≈œ
@@ -25,8 +24,11 @@ public class TurnManager : MonoBehaviour
 
     public int playerCount = 1;
     public int turnPlayer;
+    public int turnCount;
+    public Text turnCountText;
 
     public Character testPlayer;
+    public Character[] Players;
     public int moveDistance = 0;
 
     private void Awake()
@@ -71,6 +73,9 @@ public class TurnManager : MonoBehaviour
                 //Debug.Log("¿Ãµø");
                 StartCoroutine(HandleMove());
                 break;
+            case TurnState.EndTurn:
+                StartCoroutine(HandleTurnEnd());
+                break;
 
         }
     }
@@ -101,11 +106,23 @@ public class TurnManager : MonoBehaviour
     }
     public IEnumerator HandleMove() 
     {
-        for (int i = 0; i< moveDistance;i++)
+        TestButton1.interactable = false;
+        TestButton2.interactable = false;
+        for (int i = 0; i < moveDistance; i++)
         {
             testPlayer.move();
+            //Players[turnPlayer].move();
             yield return new WaitForSeconds(testPlayer.moveDuration);
         }
+        SetTurnState(TurnState.EndTurn);
+    }
+
+    IEnumerator HandleTurnEnd()
+    {
+        turnCount++;
+        turnCountText.text = $"{turnCount} ≈œ";
+        SetTurnState(TurnState.Select);
+        yield break;
 
     }
 
