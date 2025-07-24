@@ -4,13 +4,16 @@ using UnityEngine;
 using System.IO;
 using UnityEditor.Tilemaps;
 
+
+
 public class TileManager : MonoBehaviour
 {
     public string fileName = "tiles_data";
     public List<List<int>> loadedTiles = new List<List<int>>();
 
-    public GameObject tiles;
-    public GameObject tileObject;
+    //public GameObject tileSpawn;
+    public GameObject[] tileObjects;
+    public Dictionary<string, int> tileName;
 
     void Start()
     {
@@ -33,7 +36,15 @@ public class TileManager : MonoBehaviour
         }*/
         #endregion
 
-        SetTiles();
+        //tileName = new Dictionary<string, int> 
+        //{
+        //    {"Empty", 0},
+        //    {"Tile", 1},
+        //    {"BlueTile", 2}
+        //
+        //};
+
+        SetTiles(); // 타일 배치
     }
 
     void LoadTilesFromTextFile()
@@ -92,10 +103,10 @@ public class TileManager : MonoBehaviour
             column = 0;
             foreach (int tile in tiles)
             {
-                if (tile == 1)
+                if (tile != 0)
                 {
-                    GameObject go = Instantiate(tileObject);
-                    go.transform.parent = this.tiles.transform;
+                    GameObject go = Instantiate(tileObjects[tile]);
+                    go.transform.parent = this.transform;
                     go.transform.position = new Vector2(column * width, -row * height);
                 }
                 column++;

@@ -24,13 +24,11 @@ public class Character : MonoBehaviour
     public Vector2Int currentPositon = new Vector2Int(1,1); // 현재 위치
     public Vector2Int previousPositon = new Vector2Int(1,0);// 이전 위치 (방향 결정)
 
-    public float ATK;
-    public float HP;
-    public float CRT;
+    float ATK;
+    float HP;
+    float CRT;
 
-    public List<Weapon> weaponList;
-
-
+    List<Weapon> weaponList;
 
     void Start()
     {
@@ -71,14 +69,14 @@ public class Character : MonoBehaviour
             Debug.LogError($"현재 위치 {current}가 범위를 벗어남");
             return current;
         }
-        if (tileManager.loadedTiles[current.y][current.x] == 0)
+        if (tileManager.loadedTiles[current.y][current.x] != 1)
         {
             Debug.LogError($"현재 위치 {current}가 범위를 벗어남");
             return current;
         }
 
         foreach (Vector2Int dir in directions) 
-        { 
+        {
             Vector2Int neighborPos = current + dir;    // 이웃 위치 계산
 
             if (IsValidPositon(neighborPos))    // 범위 내에 있는지
@@ -87,6 +85,7 @@ public class Character : MonoBehaviour
                 { 
                     if(neighborPos != previous) // 이전 위치가 아닌지
                     {
+                        //Debug.Log("통과");
                         return neighborPos;     // 다음 위치
                     }
                 }
@@ -98,9 +97,9 @@ public class Character : MonoBehaviour
 
     bool IsValidPositon(Vector2Int positon)
     {
-        if (positon.y < 0 || positon.x >= tileManager.loadedTiles.Count) return false;  // 행 인덱스 검사
-        if (positon.x < 0 || positon.y >= tileManager.loadedTiles.Count) return false;  // 열 인덱스 검사
-
+        if (positon.y < 0 || positon.x >= tileManager.loadedTiles.Count + 2) return false;  // 행 인덱스 검사
+        if (positon.x < 0 || positon.y >= tileManager.loadedTiles.Count + 2) return false;  // 열 인덱스 검사
+    
         return true;
     }
 
