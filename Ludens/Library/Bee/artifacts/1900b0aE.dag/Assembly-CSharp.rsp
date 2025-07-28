@@ -382,6 +382,7 @@
 "Assets/Scripts/TileManager.cs"
 "Assets/Scripts/TurnManager.cs"
 "Assets/Scripts/Weapon.cs"
+"Assets/Scripts/Weapons/Punch.cs"
 -langversion:9.0
 
 /deterministic
