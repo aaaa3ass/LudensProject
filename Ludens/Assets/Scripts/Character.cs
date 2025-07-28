@@ -16,13 +16,19 @@ public enum CharacterState
 
 public class Character : MonoBehaviour
 {
+    SpriteRenderer spriteRenderer;
+    public Sprite upSprite;
+    public Sprite downSprite;
+    public Sprite sideSprite;
+
     public TileManager tileManager;
 
     public CharacterState currentState;
 
     public float moveDuration = 0.3f; // 한 칸 이동하는 데 걸리는 시간
-    public Vector2Int currentPositon = new Vector2Int(1,1); // 현재 위치
-    public Vector2Int previousPositon = new Vector2Int(1,0);// 이전 위치 (방향 결정)
+    public Vector2Int currentPosition = new Vector2Int(1,1); // 현재 위치
+    public Vector2Int previousPosition = new Vector2Int(1,0);// 이전 위치 (방향 결정)
+    private CharacterDirection currectDirection;
 
     float ATK;
     float HP;
@@ -34,12 +40,17 @@ public class Character : MonoBehaviour
     {
         currentState = CharacterState.Idle; // 대기 상태
 
-        transform.position = new Vector3(currentPositon.x, currentPositon.y * -1, 0); // 시작 위치
+        transform.position = new Vector3(currentPosition.x, currentPosition.y * -1, 0); // 시작 위치
+        currectDirection = CharacterDirection.Down;
 
-        //weaponList[0] = new TestWeapon();
+        spriteRenderer = GetComponent<SpriteRenderer>();    // 이미지
     }
 
     #region 4방향 이동 벡터 directions
+    private enum CharacterDirection
+    {
+        Up, Down, Left, Right
+    }
     private static readonly Vector2Int[] directions = new Vector2Int[]
     {
         new Vector2Int(-1,0), // up
@@ -51,15 +62,16 @@ public class Character : MonoBehaviour
     #region 이동 관련
     public void move()
     {
-        Vector2Int nextPositon = GetNextPosition(currentPositon, previousPositon);
+        Vector2Int nextPosition = GetNextPosition(currentPosition, previousPosition);
 
-        Vector3 newTargetPos = new Vector3(nextPositon.x, nextPositon.y * -1, 0);
+        Vector3 newTargetPos = new Vector3(nextPosition.x, nextPosition.y * -1, 0);
 
         StartCoroutine(SmoothMove(newTargetPos));   // 이동
 
         // 위치 갱신
-        previousPositon = currentPositon;
-        currentPositon = nextPositon;
+        previousPosition = currentPosition;
+        currentPosition = nextPosition;
+
     }
 
     private Vector2Int GetNextPosition(Vector2Int current, Vector2Int previous)
@@ -85,7 +97,6 @@ public class Character : MonoBehaviour
                 { 
                     if(neighborPos != previous) // 이전 위치가 아닌지
                     {
-                        //Debug.Log("통과");
                         return neighborPos;     // 다음 위치
                     }
                 }
@@ -122,11 +133,66 @@ public class Character : MonoBehaviour
 
         transform.position = newTarget;             // 정확한 위치에 안착
         currentState = CharacterState.Idle;         // 정지 상태로 설정
+
+        SetDirection();
+    }
+
+    public void SetDirection()
+    {
+        foreach (Vector2Int dir in directions)
+        {
+            Vector2Int neighborPos = currentPosition + dir;
+            if (IsValidPositon(neighborPos) && neighborPos.y >= 0 && neighborPos.x >= 0)
+            {
+                if (tileManager.loadedTiles[neighborPos.y][neighborPos.x] == 1) // 갈 수 있는지
+                {
+                    if (neighborPos != previousPosition) // 이전 위치가 아닌지
+                    {
+                        if (dir == new Vector2Int(0, -1))
+                        {
+                            currectDirection = CharacterDirection.Up;
+                        }
+                        if (dir == new Vector2Int(0, 1)) 
+                        {
+                            currectDirection = CharacterDirection.Down;
+                        }
+                        if (dir == new Vector2Int(1, 0))
+                        {
+                            currectDirection = CharacterDirection.Right;
+                        }
+                        if (dir == new Vector2Int(-1, 0))
+                        {
+                            currectDirection = CharacterDirection.Left;
+                        }
+                    }
+                }
+            }
+
+        }
+
     }
     #endregion
 
     void Update()
     {
+        if(currectDirection == CharacterDirection.Up)
+        {
+            spriteRenderer.sprite = upSprite;
+        }
+        if(currectDirection == CharacterDirection.Down)
+        {
+            spriteRenderer.sprite = downSprite;
+        }
+        if(currectDirection == CharacterDirection.Left)
+        {
+            spriteRenderer.sprite = sideSprite;
+            spriteRenderer.flipX = false;
+        }
+        if(currectDirection == CharacterDirection.Right)
+        {
+            spriteRenderer.sprite = sideSprite;
+            spriteRenderer.flipX = true;
+        }
 
     }
 }
