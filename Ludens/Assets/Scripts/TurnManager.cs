@@ -70,7 +70,6 @@ public class TurnManager : MonoBehaviour
                 StartCoroutine(HandleSelect());
                 break;
             case TurnState.Move:
-                //Debug.Log("이동");
                 StartCoroutine(HandleMove());
                 break;
             case TurnState.EndTurn:
@@ -110,8 +109,7 @@ public class TurnManager : MonoBehaviour
         TestButton2.interactable = false;
         for (int i = 0; i < moveDistance; i++)
         {
-            testPlayer.move();
-            //Players[turnPlayer].move();
+            Players[turnPlayer].move();
             yield return new WaitForSeconds(testPlayer.moveDuration);
         }
         SetTurnState(TurnState.EndTurn);
@@ -119,8 +117,9 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator HandleTurnEnd()
     {
-        turnCount++;
-        turnCountText.text = $"{turnCount} 턴";
+        turnCount++;                            // 턴 증가
+        turnPlayer = turnCount % Players.Length;// 턴 플레이어 변경
+        turnCountText.text = $"{turnCount} 턴"; // 턴 표시
         SetTurnState(TurnState.Select);
         yield break;
 
