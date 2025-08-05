@@ -44,10 +44,42 @@ public class DataManager : MonoBehaviour
 
     private void Update()
     {
-        for(int i = 0;i < Loadout.Count; i++)
+        #region 장착 무기 업데이트
+        for (int i = 0; i < 6; i++)
         {
-            slots[i].GetComponentInChildren<Text>().text = Loadout[i].moveDistance.ToString();
+            if (Loadout.Count <= i)
+            {
+                slots[i].GetComponentInChildren<Text>().text = "None";
+            }
+            else 
+            {
+                slots[i].GetComponentInChildren<Text>().text = Loadout[i].moveDistance.ToString();
+            }
         }
+        #endregion
+
+    }
+
+    public void WeaponSelect(Weapon weapon)
+    {
+
+        if (Loadout.Count == 0)
+        {
+            Loadout.Add(weapon);
+            return;
+        }
+        int count = Loadout.Count;
+
+        for(int i = 0; i < count; i++)
+        {
+            if (weapon.moveDistance == Loadout[i].moveDistance)
+            {
+                //Debug.Log($"{i}번째에 있는 무기 {Loadout[i].moveDistance} 해제");
+                Loadout.RemoveAt(i);
+                return;
+            }
+        }
+        Loadout.Add(weapon);
     }
 
 
