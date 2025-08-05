@@ -11,6 +11,7 @@ public class DataManager : MonoBehaviour
     public List<Weapon> Loadout;
     public GameObject weaponimage;
     public Transform viewport;
+    public List<Image> slots;
 
     private void Awake()
     {
@@ -29,15 +30,25 @@ public class DataManager : MonoBehaviour
     {
         for(int i = 0; i < 30;i++)
         {
-            Inventory.Add(new Weapon());
-            Inventory[i].moveDistance = i + 1;
-            GameObject newObject = Instantiate(weaponimage, viewport);
-            newObject.name = "" + i;
-            Text child = newObject.GetComponentInChildren<Text>();
-            child.text = "" + (i + 1);
+            Inventory.Add(new Weapon()); // 인벤토리에 추가
+            Inventory[i].moveDistance = i; // 임시 넘버링
+            GameObject newObject = Instantiate(weaponimage, viewport); // 무기 생성
+            newObject.name = "" + i; // 이름 변경
+            InventoryButton button = newObject.GetComponent<InventoryButton>(); // 버튼 할당
+            button.weapon = Inventory[i];
+            button.dataManager = this; // DataManager 연결
+            Text child = newObject.GetComponentInChildren<Text>(); // 텍스트 연결
+            child.text = "" + i; // 텍스트 변경
         }
     }
 
+    private void Update()
+    {
+        for(int i = 0;i < Loadout.Count; i++)
+        {
+            slots[i].GetComponentInChildren<Text>().text = Loadout[i].moveDistance.ToString();
+        }
+    }
 
 
 }

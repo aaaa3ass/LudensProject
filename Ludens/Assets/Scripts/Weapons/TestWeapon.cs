@@ -6,6 +6,7 @@ public class TestWeapon : Weapon
 {
     void Start()
     {
+        imageName = "TestWeapon";
         AttackRange = new List<List<int>>
         {
             new List<int> {1, 0, 0, 0, 1},

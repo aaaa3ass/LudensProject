@@ -14,8 +14,12 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        image.sprite = Resources.Load<Sprite>(imageName);
+        //image.sprite = Resources.Load<Sprite>(imageName);
     }
 
+    private void Start()
+    {
+        imageName = "WeaponSample";
+    }
 
 }
