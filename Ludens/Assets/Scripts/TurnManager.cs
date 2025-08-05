@@ -19,8 +19,9 @@ public class TurnManager : MonoBehaviour
     public static TurnManager Instance { get; private set; } // 싱글톤 패턴
 
     public TurnState state;
-    public Button TestButton1;
-    public Button TestButton2;
+    //public Button TestButton1;
+    //public Button TestButton2;
+    public Button[] Buttons;
 
     public int playerCount = 1;
     public int turnPlayer;
@@ -50,6 +51,11 @@ public class TurnManager : MonoBehaviour
         SetTurnState(TurnState.Move);
     }
 
+    public void SetTurnStateAttack()
+    {
+        SetTurnState(TurnState.Attack);
+    }
+
     public void SetMoveDistance(int n)
     {
         moveDistance = n;
@@ -68,6 +74,11 @@ public class TurnManager : MonoBehaviour
             case TurnState.Select:
                 Debug.Log($"플레이어{turnPlayer + 1}무기 선택");
                 StartCoroutine(HandleSelect());
+                break;
+            case TurnState.Attack:
+               // Debug.Log("공격");
+                //SetTurnState(TurnState.Move);
+                StartCoroutine(HandleAttack());
                 break;
             case TurnState.Move:
                 StartCoroutine(HandleMove());
@@ -93,25 +104,37 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator HandleSelect()
     {
-        if (TestButton1 != null)    // 버튼 활성화
+        foreach(Button button in Buttons) // 버튼 활성화
         {
-            TestButton1.interactable = true;
+            button.interactable = true;
         }
-        if (TestButton2 != null)    // 버튼 활성화
-        {
-            TestButton2.interactable = true;
-        }
+        yield break;
+    }
+    IEnumerator HandleAttack()
+    {
+        //Debug.Log("공격");
+        //Players[turnPlayer].attack()
+        SetTurnState(TurnState.Move);
         yield break;
     }
     public IEnumerator HandleMove() 
     {
-        TestButton1.interactable = false;
-        TestButton2.interactable = false;
+        foreach(Button button in Buttons) // 버튼 비활성화
+        {
+            button.interactable = false;
+        }
         for (int i = 0; i < moveDistance; i++)
         {
             Players[turnPlayer].move();
             yield return new WaitForSeconds(testPlayer.moveDuration);
         }
+        /*
+         * for(int i = 0; i < Player[turnPlayer].weaponList[weaponNumber].moveDistance; i++) // 이동 거리만큼 이동
+         * {
+         *      Players[turnPlayer].move();
+         *      yield return new WaitForSeconds(testPlayer.moveDuration);
+         * }
+         */
         SetTurnState(TurnState.EndTurn);
     }
 
