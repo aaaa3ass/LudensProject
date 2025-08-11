@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class DataManager : MonoBehaviour
 {
@@ -9,13 +10,12 @@ public class DataManager : MonoBehaviour
 
     public List<Weapon> Inventory;
     public List<Weapon> Loadout;
-    public GameObject weaponimage;
-    public Transform viewport;
-    public List<Image> slots;
+    public List<int> Weapons;
 
     private void Awake()
     {
-        if(instance == null) // 처음 생성될 때 싱글톤 인스턴스 할당
+        #region 싱글톤
+        if (instance == null) // 처음 생성될 때 싱글톤 인스턴스 할당
         {
             instance = this;
             DontDestroyOnLoad(gameObject); // 씬이 바뀔 때 파괴되지 않게
@@ -24,39 +24,19 @@ public class DataManager : MonoBehaviour
         {
             Destroy(gameObject); // 새 오브젝트 파괴
         }
+        #endregion
+        //SampleWeaponsAdd();
     }
 
     void Start()
     {
-        for(int i = 0; i < 30;i++)
-        {
-            Inventory.Add(new Weapon()); // 인벤토리에 추가
-            Inventory[i].moveDistance = i; // 임시 넘버링
-            GameObject newObject = Instantiate(weaponimage, viewport); // 무기 생성
-            newObject.name = "" + i; // 이름 변경
-            InventoryButton button = newObject.GetComponent<InventoryButton>(); // 버튼 할당
-            button.weapon = Inventory[i];
-            button.dataManager = this; // DataManager 연결
-            Text child = newObject.GetComponentInChildren<Text>(); // 텍스트 연결
-            child.text = "" + i; // 텍스트 변경
-        }
+        Debug.Log("DataManager 시작");
+        LoadInventory();
+        SaveInventory(Inventory);
     }
 
     private void Update()
     {
-        #region 장착 무기 업데이트
-        for (int i = 0; i < 6; i++)
-        {
-            if (Loadout.Count <= i)
-            {
-                slots[i].GetComponentInChildren<Text>().text = "None";
-            }
-            else 
-            {
-                slots[i].GetComponentInChildren<Text>().text = Loadout[i].moveDistance.ToString();
-            }
-        }
-        #endregion
 
     }
 
@@ -72,7 +52,7 @@ public class DataManager : MonoBehaviour
 
         for(int i = 0; i < count; i++)
         {
-            if (weapon.moveDistance == Loadout[i].moveDistance)
+            if (weapon.weaponType == Loadout[i].weaponType)
             {
                 //Debug.Log($"{i}번째에 있는 무기 {Loadout[i].moveDistance} 해제");
                 Loadout.RemoveAt(i);
@@ -82,5 +62,44 @@ public class DataManager : MonoBehaviour
         Loadout.Add(weapon);
     }
 
+    private void SampleWeaponsAdd()
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            Inventory.Add(new Weapon()); // 인벤토리에 추가
+            Inventory[i].weaponType = i; // 임시 넘버링
 
+        }
+    }
+
+    [System.Serializable]
+    public class InventoryDataContainer
+    {
+        public List<Weapon> Weapons;
+    }
+
+    public void SaveInventory(List<Weapon> weapons)
+    {
+        InventoryDataContainer container = new InventoryDataContainer();
+        container.Weapons = weapons;
+
+        string json = JsonUtility.ToJson(container);
+        string path = Path.Combine(Application.persistentDataPath, "inventory.json");
+        File.WriteAllText(path, json);
+        Debug.Log("인벤토리 저장 완료: " + path);
+    }
+
+    public List<Weapon> LoadInventory()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "inventory.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            InventoryDataContainer container = JsonUtility.FromJson<InventoryDataContainer>(json);
+            Debug.Log("인벤토리 로드 완료.");
+            return container.Weapons;
+        }
+        Debug.Log("저장된 인벤토리 파일 없음.");
+        return new List<Weapon>();
+    }
 }

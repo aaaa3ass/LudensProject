@@ -175,24 +175,29 @@ public class Character : MonoBehaviour
 
     void Update()
     {
-        if(currectDirection == CharacterDirection.Up)
+        setDirection();
+
+    }
+
+    private void setDirection()
+    {
+        if (currectDirection == CharacterDirection.Up)
         {
             spriteRenderer.sprite = upSprite;
         }
-        if(currectDirection == CharacterDirection.Down)
+        if (currectDirection == CharacterDirection.Down)
         {
             spriteRenderer.sprite = downSprite;
         }
-        if(currectDirection == CharacterDirection.Left)
+        if (currectDirection == CharacterDirection.Left)
         {
             spriteRenderer.sprite = sideSprite;
             spriteRenderer.flipX = false;
         }
-        if(currectDirection == CharacterDirection.Right)
+        if (currectDirection == CharacterDirection.Right)
         {
             spriteRenderer.sprite = sideSprite;
             spriteRenderer.flipX = true;
         }
-
     }
 }

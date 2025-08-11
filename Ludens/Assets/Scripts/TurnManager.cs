@@ -76,8 +76,7 @@ public class TurnManager : MonoBehaviour
                 StartCoroutine(HandleSelect());
                 break;
             case TurnState.Attack:
-               // Debug.Log("공격");
-                //SetTurnState(TurnState.Move);
+                Debug.Log("공격");
                 StartCoroutine(HandleAttack());
                 break;
             case TurnState.Move:
@@ -112,7 +111,6 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator HandleAttack()
     {
-        //Debug.Log("공격");
         //Players[turnPlayer].attack()
         SetTurnState(TurnState.Move);
         yield break;
@@ -128,14 +126,9 @@ public class TurnManager : MonoBehaviour
             Players[turnPlayer].move();
             yield return new WaitForSeconds(testPlayer.moveDuration);
         }
-        /*
-         * for(int i = 0; i < Player[turnPlayer].weaponList[weaponNumber].moveDistance; i++) // 이동 거리만큼 이동
-         * {
-         *      Players[turnPlayer].move();
-         *      yield return new WaitForSeconds(testPlayer.moveDuration);
-         * }
-         */
+
         SetTurnState(TurnState.EndTurn);
+        yield break;
     }
 
     IEnumerator HandleTurnEnd()
@@ -145,7 +138,6 @@ public class TurnManager : MonoBehaviour
         turnCountText.text = $"{turnCount} 턴"; // 턴 표시
         SetTurnState(TurnState.Select);
         yield break;
-
     }
 
 }

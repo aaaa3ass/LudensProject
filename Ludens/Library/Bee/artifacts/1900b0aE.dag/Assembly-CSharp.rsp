@@ -379,6 +379,8 @@
 "Assets/Scripts/Character.cs"
 "Assets/Scripts/DataManager.cs"
 "Assets/Scripts/InventoryButton.cs"
+"Assets/Scripts/LoadoutManager.cs"
+"Assets/Scripts/LoadoutUIManager.cs"
 "Assets/Scripts/SceneChange.cs"
 "Assets/Scripts/TileManager.cs"
 "Assets/Scripts/TurnManager.cs"

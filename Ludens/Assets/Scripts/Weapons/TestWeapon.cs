@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class TestWeapon : Weapon
 {
+
+    private void Awake()
+    {
+        Debug.Log("TestWeapon »ý¼º");
+    }
     void Start()
     {
+
         imageName = "TestWeapon";
         AttackRange = new List<List<int>>
         {
