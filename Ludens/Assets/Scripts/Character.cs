@@ -25,7 +25,7 @@ public class Character : MonoBehaviour
 
     public CharacterState currentState;
 
-    public float moveDuration = 0.3f; // 한 칸 이동하는 데 걸리는 시간
+    public float moveDuration = 1.0f; // 한 칸 이동하는 데 걸리는 시간
     public Vector2Int currentPosition = new Vector2Int(1,1); // 현재 위치
     public Vector2Int previousPosition = new Vector2Int(1,0);// 이전 위치 (방향 결정)
     private CharacterDirection currectDirection;
@@ -34,7 +34,7 @@ public class Character : MonoBehaviour
     float HP;
     float CRT;
 
-    List<Weapon> weaponList;
+    //List<Weapon> weaponList;
 
     void Start()
     {

@@ -8,63 +8,44 @@ using UnityEngine.UI;
 
 public class WeaponInventory : MonoBehaviour
 {
-    const int SIZE = 10;
-    public int[] weapons = new int[SIZE];
-    public Sprite[] weaponImages = new Sprite[SIZE];
-    public bool[] equipments = new bool[SIZE];
-    public int count = 0;
+    public static WeaponInventory Instance;             // 싱글톤
+
+    public const int SIZE = 7;
+    public int[] weapons = new int[Weapon.WEAPON_TYPE_COUNT];// 무기 종류
+    public bool[] equipments = new bool[Weapon.WEAPON_TYPE_COUNT];          // 장착 여부
+    public int count = 0;                               // 장착 무기 수
+
+    public Sprite[] weaponImages = new Sprite[Weapon.WEAPON_TYPE_COUNT];    // 이미지
     
-
-    public Transform slotParent;
-    public GameObject slotPrefab;
-    public Transform[] slotEquipments;
-
-    private void Start()
+    private void Awake()
     {
-        RefreshUI();
+        // 싱글톤 인스턴스 설정
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않도록
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        LoadWeaponImages();
     }
 
-    public void RefreshUI()
+    private void LoadWeaponImages()
     {
-        foreach (Transform child in slotParent)
-        {
-            Destroy(child.gameObject);
-        }
-
-        for (int i = 0; i < 6 ; i++)
-        {
-            foreach (Transform child in slotEquipments[i])
-                Destroy(child.gameObject);
-        }
-
-        int equipIndex = 0;
-        for (int i = 0;i < SIZE; i++)
-        {
-            if (weapons[i] > 0) 
-            {
-                GameObject slot = Instantiate(slotPrefab);
-                if (equipments[i] == true)
-                {
-                    slot.transform.parent = slotEquipments[equipIndex++];
-                    slot.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                }
-                else
-                {
-                    slot.transform.parent = slotParent;   
-                }
-                slot.GetComponent<Image>().sprite = weaponImages[i];    // 이미지 설정 
-                slot.GetComponent<InventoryButton>().weaponNumber = i;  // 무기 종류
-                slot.transform.Find("Type").GetComponent<Text>().text = i.ToString();// 임시 넘버
-                //slot.transform.Find("Quantity").GetComponent<Text>().text = weapons[i].ToString(); // 무기 수  
-
-            }
-        }
-
-    }
+        weaponImages[0] = Resources.Load<Sprite>("Weapon/Punch");
+        weaponImages[1] = Resources.Load<Sprite>("Weapon/OldSword");
+        weaponImages[2] = Resources.Load<Sprite>("Weapon/TwinSwords");
+        weaponImages[3] = Resources.Load<Sprite>("Weapon/Hwando");
+        weaponImages[4] = Resources.Load<Sprite>("Weapon/Orb");
+        weaponImages[5] = Resources.Load<Sprite>("Weapon/Grimore");
+        weaponImages[6] = Resources.Load<Sprite>("Weapon/Knife");
+    }   // 무기 이미지 로드
 
     public void EquipWeapon(int num)
     {
-        if (isFull()) return;
+
         if (equipments[num] == true) 
         {
             equipments[num] = false;
@@ -72,13 +53,12 @@ public class WeaponInventory : MonoBehaviour
         }
         else
         {
+            if (isFull()) return;
             equipments[num] = true;
             count++;
         }
             
-        RefreshUI();
     }
-
     public bool isFull()
     {
         if(count >= 6)

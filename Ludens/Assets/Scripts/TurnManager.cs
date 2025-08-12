@@ -19,16 +19,13 @@ public class TurnManager : MonoBehaviour
     public static TurnManager Instance { get; private set; } // 싱글톤 패턴
 
     public TurnState state;
-    //public Button TestButton1;
-    //public Button TestButton2;
     public Button[] Buttons;
 
-    public int playerCount = 1;
-    public int turnPlayer;
-    public int turnCount;
-    public Text turnCountText;
+    public int playerCount = 1; // 플레이어 수
+    public int turnPlayer;      // 턴 플레이어
+    public int turnCount;       // 턴 수
+    public Text turnCountText;  // 턴 텍스트
 
-    public Character testPlayer;
     public Character[] Players;
     public int moveDistance = 0;
 
@@ -55,6 +52,7 @@ public class TurnManager : MonoBehaviour
     {
         SetTurnState(TurnState.Attack);
     }
+
 
     public void SetMoveDistance(int n)
     {
@@ -124,7 +122,7 @@ public class TurnManager : MonoBehaviour
         for (int i = 0; i < moveDistance; i++)
         {
             Players[turnPlayer].move();
-            yield return new WaitForSeconds(testPlayer.moveDuration);
+            yield return new WaitForSeconds(Players[turnPlayer].moveDuration + 0.1f);
         }
 
         SetTurnState(TurnState.EndTurn);
@@ -134,7 +132,7 @@ public class TurnManager : MonoBehaviour
     IEnumerator HandleTurnEnd()
     {
         turnCount++;                            // 턴 증가
-        turnPlayer = turnCount % Players.Length;// 턴 플레이어 변경
+        turnPlayer = turnCount % playerCount;// 턴 플레이어 변경
         turnCountText.text = $"{turnCount} 턴"; // 턴 표시
         SetTurnState(TurnState.Select);
         yield break;

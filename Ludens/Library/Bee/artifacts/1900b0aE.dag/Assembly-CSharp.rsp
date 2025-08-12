@@ -377,12 +377,15 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.21f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.21f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/Character.cs"
+"Assets/Scripts/InGameUIManager.cs"
 "Assets/Scripts/Inventory/InventoryButton.cs"
+"Assets/Scripts/Inventory/LoadoutUIManager.cs"
 "Assets/Scripts/Inventory/WeaponInventory.cs"
 "Assets/Scripts/SceneChange.cs"
 "Assets/Scripts/TileManager.cs"
 "Assets/Scripts/TurnManager.cs"
 "Assets/Scripts/Weapon.cs"
+"Assets/Scripts/WeaponButton.cs"
 -langversion:9.0
 
 /deterministic
