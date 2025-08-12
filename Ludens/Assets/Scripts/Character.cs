@@ -178,7 +178,8 @@ public class Character : MonoBehaviour
 
     public void Attack(int weaponType)
     {
-        List<List<int>> grid = weapon.AttackRange(weaponType);
+        Vector2Int AttackPoint = new Vector2Int(); // 공격 지점
+        List<List<int>> grid = weapon.AttackRange(weaponType); // 공격 범위
         Vector2Int point = new Vector2Int(0, 0);
         for(int y = 0;y < grid.Count;y++)
             for(int x = 0;x< grid[y].Count; x++)
@@ -188,7 +189,6 @@ public class Character : MonoBehaviour
                     point.y = y;
             }
 
-
         for(int y = 0; y < grid.Count; y++) 
         {
             for(int x = 0; x < grid[y].Count; x++)
@@ -197,13 +197,40 @@ public class Character : MonoBehaviour
                 {
                     int relativeX = x - point.x;
                     int relativeY = y - point.y;
+                    AttackPoint = new Vector2Int(currentPosition.x + relativeX, currentPosition.y + relativeY);
+
+                    if(currectDirection == CharacterDirection.Left)
+                    {
+                        AttackPoint.x -= currentPosition.x;
+                        AttackPoint.y -= currentPosition.y;
+                        AttackPoint = new Vector2Int(AttackPoint.y,-AttackPoint.x);
+                        AttackPoint.x += currentPosition.x;
+                        AttackPoint.y += currentPosition.y;
+                    }   // 왼쪽 공격
+                    if (currectDirection == CharacterDirection.Right)
+                    {
+                        AttackPoint.x -= currentPosition.x;
+                        AttackPoint.y -= currentPosition.y;
+                        AttackPoint = new Vector2Int(-AttackPoint.y, AttackPoint.x);
+                        AttackPoint.x += currentPosition.x;
+                        AttackPoint.y += currentPosition.y;
+                    } // 오른쪽 공격
+                    if(currectDirection == CharacterDirection.Down)
+                    {
+                        AttackPoint.x -= currentPosition.x;
+                        AttackPoint.y -= currentPosition.y;
+                        AttackPoint = new Vector2Int(-AttackPoint.x, -AttackPoint.y);
+                        AttackPoint.x += currentPosition.x;
+                        AttackPoint.y += currentPosition.y;
+                    }   // 아래 공격
 
                     Vector3 spawnPos = new Vector3(
-                        currentPosition.x + relativeX,
-                        - currentPosition.y - relativeY,
-                        0 
+                        AttackPoint.x,
+                        -AttackPoint.y,
+                        0
                         );
-                    Instantiate(testAttackPrefab,spawnPos, Quaternion.identity);
+
+                    Instantiate(testAttackPrefab, spawnPos, Quaternion.identity);
                 }
             }
         }
@@ -212,10 +239,10 @@ public class Character : MonoBehaviour
 
     void Update()
     {
-        setDirection();
+        setSprite();
     }
 
-    private void setDirection()
+    private void setSprite()
     {
         if (currectDirection == CharacterDirection.Up)
         {
