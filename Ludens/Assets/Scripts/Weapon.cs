@@ -37,7 +37,7 @@ public class Weapon : MonoBehaviour
         #region 오래된 검
         weapons[1].Name = "OldSword";
         weapons[1].ATK = 2;
-        weapons[1].moveDistance = 4;
+        weapons[1].moveDistance = 5;
         weapons[1].AttackRange = new List<List<int>>
         {
             new List<int> { 1 },
@@ -45,6 +45,18 @@ public class Weapon : MonoBehaviour
             new List<int> { 1 },
             new List<int> { 1 },
             new List<int> { 2 }
+        };
+        #endregion
+        #region 쌍검
+        weapons[2].Name = "TwinSwords";
+        weapons[2].ATK = 3;
+        weapons[2].moveDistance = 1;
+        weapons[2].AttackRange = new List<List<int>>
+        {
+            new List<int> { 1, 0, 0, 0, 1 },
+            new List<int> { 0, 1, 0, 1 },
+            new List<int> { 0, 0, 1 },
+            new List<int> { 0, 0, 2 }
         };
         #endregion
     }
@@ -62,6 +74,11 @@ public class Weapon : MonoBehaviour
     public int MoveDistance(int weaponNumber)
     {
         return weapons[weaponNumber].moveDistance;
+    }
+
+    public List<List<int>> AttackRange(int weaponNumber)
+    {
+        return weapons[weaponNumber].AttackRange;
     }
 
 }

@@ -28,6 +28,7 @@ public class TurnManager : MonoBehaviour
 
     public Character[] Players;
     public int moveDistance = 0;
+    public int weaponType = 0;
 
     private void Awake()
     {
@@ -74,7 +75,7 @@ public class TurnManager : MonoBehaviour
                 StartCoroutine(HandleSelect());
                 break;
             case TurnState.Attack:
-                Debug.Log("공격");
+                //Debug.Log("공격");
                 StartCoroutine(HandleAttack());
                 break;
             case TurnState.Move:
@@ -109,9 +110,9 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator HandleAttack()
     {
-        //Players[turnPlayer].attack()
+        Players[turnPlayer].Attack(weaponType);
+        yield return new WaitForSeconds(1.0f);
         SetTurnState(TurnState.Move);
-        yield break;
     }
     public IEnumerator HandleMove() 
     {

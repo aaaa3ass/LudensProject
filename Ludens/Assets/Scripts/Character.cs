@@ -22,6 +22,7 @@ public class Character : MonoBehaviour
     public Sprite sideSprite;
 
     public TileManager tileManager;
+    Weapon weapon;
 
     public CharacterState currentState;
 
@@ -34,7 +35,7 @@ public class Character : MonoBehaviour
     float HP;
     float CRT;
 
-    //List<Weapon> weaponList;
+    public Object testAttackPrefab;
 
     void Start()
     {
@@ -44,6 +45,8 @@ public class Character : MonoBehaviour
         currectDirection = CharacterDirection.Down;
 
         spriteRenderer = GetComponent<SpriteRenderer>();    // 이미지
+        
+        weapon = FindObjectOfType<Weapon>();
     }
 
     #region 4방향 이동 벡터 directions
@@ -173,10 +176,43 @@ public class Character : MonoBehaviour
     }
     #endregion
 
+    public void Attack(int weaponType)
+    {
+        List<List<int>> grid = weapon.AttackRange(weaponType);
+        Vector2Int point = new Vector2Int(0, 0);
+        for(int y = 0;y < grid.Count;y++)
+            for(int x = 0;x< grid[y].Count; x++)
+            {
+                if (grid[y][x] == 2)
+                    point.x = x;
+                    point.y = y;
+            }
+
+
+        for(int y = 0; y < grid.Count; y++) 
+        {
+            for(int x = 0; x < grid[y].Count; x++)
+            {
+                if (grid[y][x] == 1)
+                {
+                    int relativeX = x - point.x;
+                    int relativeY = y - point.y;
+
+                    Vector3 spawnPos = new Vector3(
+                        currentPosition.x + relativeX,
+                        - currentPosition.y - relativeY,
+                        0 
+                        );
+                    Instantiate(testAttackPrefab,spawnPos, Quaternion.identity);
+                }
+            }
+        }
+
+    }
+
     void Update()
     {
         setDirection();
-
     }
 
     private void setDirection()

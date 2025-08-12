@@ -17,8 +17,9 @@ public class WeaponButton : MonoBehaviour
 
     public void OnButtonClick()
     {
-        Debug.Log("버튼 누름");
+        //Debug.Log("무기 버튼 누름");
         turnManager.moveDistance = weapon.MoveDistance(weaponNumber);
-        turnManager.SetTurnState(TurnState.Move);
+        turnManager.weaponType = weaponNumber;
+        turnManager.SetTurnState(TurnState.Attack);
     }
 }
