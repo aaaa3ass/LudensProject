@@ -180,14 +180,19 @@ public class Character : MonoBehaviour
     {
         Vector2Int AttackPoint = new Vector2Int(); // 공격 지점
         List<List<int>> grid = weapon.AttackRange(weaponType); // 공격 범위
+
         Vector2Int point = new Vector2Int(0, 0);
-        for(int y = 0;y < grid.Count;y++)
+        for(int y = 0;y < grid.Count; y++)
+        {
             for(int x = 0;x< grid[y].Count; x++)
             {
                 if (grid[y][x] == 2)
+                {
                     point.x = x;
                     point.y = y;
+                }
             }
+        }
 
         for(int y = 0; y < grid.Count; y++) 
         {

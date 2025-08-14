@@ -37,7 +37,7 @@ public class Weapon : MonoBehaviour
         #region 오래된 검
         weapons[1].Name = "OldSword";
         weapons[1].ATK = 2;
-        weapons[1].moveDistance = 5;
+        weapons[1].moveDistance = 1;
         weapons[1].AttackRange = new List<List<int>>
         {
             new List<int> { 1 },
@@ -50,13 +50,47 @@ public class Weapon : MonoBehaviour
         #region 쌍검
         weapons[2].Name = "TwinSwords";
         weapons[2].ATK = 3;
-        weapons[2].moveDistance = 1;
+        weapons[2].moveDistance = 2;
         weapons[2].AttackRange = new List<List<int>>
         {
             new List<int> { 1, 0, 0, 0, 1 },
             new List<int> { 0, 1, 0, 1 },
             new List<int> { 0, 0, 1 },
             new List<int> { 0, 0, 2 }
+        };
+        #endregion
+        #region 환도
+        weapons[3].Name = "Hwando";
+        weapons[3].ATK = 4;
+        weapons[3].moveDistance = 3;
+        weapons[3].AttackRange = new List<List<int>>
+        {
+            new List<int> { 1, 1, 1 },
+            new List<int> { 1, 1, 1 },
+            new List<int> { 0, 2 }
+        };
+        #endregion
+        #region 오브
+        weapons[4].Name = "Orb";
+        weapons[4].ATK = 5;
+        weapons[4].moveDistance = 0;
+        weapons[4].AttackRange = new List<List<int>>
+        {
+            new List<int> { 1, 1, 1, },
+            new List<int> { 1, 2, 1, },
+            new List<int> { 1, 1, 1  }
+        };
+        #endregion
+        #region 그리모어
+        weapons[5].Name = "Grimore";
+        weapons[5].ATK = 6;
+        weapons[5].moveDistance = 0;
+        weapons[5].AttackRange = new List<List<int>>
+        {
+            new List<int> { 0, 2, 0, },
+            new List<int> { 0, 1, 0, },
+            new List<int> { 1, 1, 1  },
+            new List<int> { 1, 1, 1  }
         };
         #endregion
     }
