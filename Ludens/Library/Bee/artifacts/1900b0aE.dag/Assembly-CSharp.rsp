@@ -376,6 +376,12 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.21f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.21f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
+"Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/BaseFrameController.cs"
+"Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/FrameController.cs"
+"Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/SceneController.cs"
+"Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/ships/BaseBulletStarter.cs"
+"Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/ships/ExplosionController.cs"
+"Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/Tools.cs"
 "Assets/DestroySelf.cs"
 "Assets/Scripts/Character.cs"
 "Assets/Scripts/InGameUIManager.cs"
@@ -387,6 +393,7 @@
 "Assets/Scripts/TurnManager.cs"
 "Assets/Scripts/Weapon.cs"
 "Assets/Scripts/WeaponButton.cs"
+"Assets/StageManager.cs"
 -langversion:9.0
 
 /deterministic

@@ -15,6 +15,7 @@ public class WeaponInventory : MonoBehaviour
     public bool[] equipments = new bool[Weapon.WEAPON_TYPE_COUNT];          // 장착 여부
     public int count = 0;                               // 장착 무기 수
 
+    Weapon weaponClass;
     public Sprite[] weaponImages = new Sprite[Weapon.WEAPON_TYPE_COUNT];    // 이미지
     
     private void Awake()
@@ -29,11 +30,18 @@ public class WeaponInventory : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+    }
+
+    private void Start()
+    {
         LoadWeaponImages();
+        weaponClass = FindAnyObjectByType<Weapon>();
     }
 
     private void LoadWeaponImages()
     {
+        //weaponImages[0] = Resources.Load<Sprite>($"Weapon/{weaponClass.GetWeaponName(0)}");
         weaponImages[0] = Resources.Load<Sprite>("Weapon/Punch");
         weaponImages[1] = Resources.Load<Sprite>("Weapon/OldSword");
         weaponImages[2] = Resources.Load<Sprite>("Weapon/TwinSwords");

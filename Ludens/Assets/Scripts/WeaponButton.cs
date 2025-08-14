@@ -21,5 +21,6 @@ public class WeaponButton : MonoBehaviour
         turnManager.moveDistance = weapon.MoveDistance(weaponNumber);
         turnManager.weaponType = weaponNumber;
         turnManager.SetTurnState(TurnState.Attack);
+
     }
 }

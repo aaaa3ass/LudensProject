@@ -29,11 +29,14 @@ public class Character : MonoBehaviour
     public float moveDuration = 1.0f; // 한 칸 이동하는 데 걸리는 시간
     public Vector2Int currentPosition = new Vector2Int(1,1); // 현재 위치
     public Vector2Int previousPosition = new Vector2Int(1,0);// 이전 위치 (방향 결정)
-    private CharacterDirection currectDirection;
+    public CharacterDirection currectDirection;
+    public bool Fixed;
 
     float ATK;
-    float HP;
+    float HP = 100;
     float CRT;
+
+    Animator animator;
 
     public Object testAttackPrefab;
 
@@ -42,15 +45,15 @@ public class Character : MonoBehaviour
         currentState = CharacterState.Idle; // 대기 상태
 
         transform.position = new Vector3(currentPosition.x, currentPosition.y * -1, 0); // 시작 위치
-        currectDirection = CharacterDirection.Down;
 
         spriteRenderer = GetComponent<SpriteRenderer>();    // 이미지
+        animator = GetComponent<Animator>();
         
-        weapon = FindObjectOfType<Weapon>();
+        weapon = FindObjectOfType<Weapon>(); // 무기 클래스
     }
 
     #region 4방향 이동 벡터 directions
-    private enum CharacterDirection
+    public enum CharacterDirection
     {
         Up, Down, Left, Right
     }
@@ -145,33 +148,38 @@ public class Character : MonoBehaviour
         foreach (Vector2Int dir in directions)
         {
             Vector2Int neighborPos = currentPosition + dir;
-            if (IsValidPositon(neighborPos) && neighborPos.y >= 0 && neighborPos.x >= 0)
+
+            if (IsValidPositon(neighborPos))
             {
-                if (tileManager.loadedTiles[neighborPos.y][neighborPos.x] == 1) // 갈 수 있는지
+                if (neighborPos.y >= 0 && neighborPos.x >= 0)
                 {
-                    if (neighborPos != previousPosition) // 이전 위치가 아닌지
+                    if (tileManager.loadedTiles[neighborPos.y][neighborPos.x] == 1) // 갈 수 있는지
                     {
-                        if (dir == new Vector2Int(0, -1))
+                        if (neighborPos != previousPosition) // 이전 위치가 아닌지
                         {
-                            currectDirection = CharacterDirection.Up;
-                        }
-                        if (dir == new Vector2Int(0, 1)) 
-                        {
-                            currectDirection = CharacterDirection.Down;
-                        }
-                        if (dir == new Vector2Int(1, 0))
-                        {
-                            currectDirection = CharacterDirection.Right;
-                        }
-                        if (dir == new Vector2Int(-1, 0))
-                        {
-                            currectDirection = CharacterDirection.Left;
+                            if (dir == new Vector2Int(0, -1))
+                            {
+                                currectDirection = CharacterDirection.Up;
+                            }
+                            if (dir == new Vector2Int(0, 1)) 
+                            {
+                                currectDirection = CharacterDirection.Down;
+                            }
+                            if (dir == new Vector2Int(1, 0))
+                            {
+                                currectDirection = CharacterDirection.Right;
+                            }
+                            if (dir == new Vector2Int(-1, 0))
+                            {
+                                currectDirection = CharacterDirection.Left;
+                            }
                         }
                     }
                 }
-            }
-
+            } 
+            
         }
+
 
     }
     #endregion
@@ -233,9 +241,24 @@ public class Character : MonoBehaviour
                         AttackPoint.x,
                         -AttackPoint.y,
                         0
-                        );
+                        ); // 실제 위치
 
-                    Instantiate(testAttackPrefab, spawnPos, Quaternion.identity);
+                    if(testAttackPrefab)
+                    {
+                        Instantiate(testAttackPrefab, spawnPos, Quaternion.identity);
+                    } // 공격 위치 표시
+
+                    #region 적 히트
+                    GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+                    foreach(GameObject enemy in enemies)
+                    {
+                        if(AttackPoint == enemy.GetComponent<Character>().currentPosition)
+                        {
+                            enemy.GetComponent<Character>().Attacked();
+                        }
+                    }
+                    #endregion
+
                 }
             }
         }
@@ -245,6 +268,10 @@ public class Character : MonoBehaviour
     void Update()
     {
         setSprite();
+        if(HP <= 0 )
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void setSprite()
@@ -267,5 +294,10 @@ public class Character : MonoBehaviour
             spriteRenderer.sprite = sideSprite;
             spriteRenderer.flipX = true;
         }
+    }
+
+    public void Attacked()
+    {
+        HP = 0;
     }
 }

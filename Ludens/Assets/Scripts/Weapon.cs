@@ -14,15 +14,17 @@ public class Weapon : MonoBehaviour
     }
 
     weaponData[] weapons = new weaponData[WEAPON_TYPE_COUNT];
+    public Sprite[] weaponImages = new Sprite[WEAPON_TYPE_COUNT];    // 이미지
 
     TurnManager turnManager;
 
     private void Start()
     {
         LoadWeaponData();
+        LoadWeaponImage();
         turnManager = FindObjectOfType<TurnManager>();
     }
-    public void LoadWeaponData()
+    private void LoadWeaponData()
     {
         #region 주먹
         weapons[0].Name = "Punch";
@@ -34,29 +36,27 @@ public class Weapon : MonoBehaviour
             new List<int> { 2 }
         };
         #endregion
-        #region 오래된 검
-        weapons[1].Name = "OldSword";
+        #region 오브
+        weapons[1].Name = "Orb";
         weapons[1].ATK = 2;
         weapons[1].moveDistance = 1;
         weapons[1].AttackRange = new List<List<int>>
         {
-            new List<int> { 1 },
-            new List<int> { 1 },
-            new List<int> { 1 },
-            new List<int> { 1 },
-            new List<int> { 2 }
+            new List<int> { 1, 1, 1, },
+            new List<int> { 1, 2, 1, },
+            new List<int> { 1, 1, 1  }
         };
         #endregion
-        #region 쌍검
-        weapons[2].Name = "TwinSwords";
+        #region 서
+        weapons[2].Name = "Grimore";
         weapons[2].ATK = 3;
         weapons[2].moveDistance = 2;
         weapons[2].AttackRange = new List<List<int>>
         {
-            new List<int> { 1, 0, 0, 0, 1 },
-            new List<int> { 0, 1, 0, 1 },
-            new List<int> { 0, 0, 1 },
-            new List<int> { 0, 0, 2 }
+            new List<int> { 0, 2, 0, },
+            new List<int> { 0, 1, 0, },
+            new List<int> { 1, 1, 1  },
+            new List<int> { 1, 1, 1  }
         };
         #endregion
         #region 환도
@@ -70,29 +70,51 @@ public class Weapon : MonoBehaviour
             new List<int> { 0, 2 }
         };
         #endregion
-        #region 오브
-        weapons[4].Name = "Orb";
+        #region 쌍검
+        weapons[4].Name = "TwinSwords";
         weapons[4].ATK = 5;
-        weapons[4].moveDistance = 0;
+        weapons[4].moveDistance = 4;
         weapons[4].AttackRange = new List<List<int>>
         {
-            new List<int> { 1, 1, 1, },
-            new List<int> { 1, 2, 1, },
-            new List<int> { 1, 1, 1  }
+            new List<int> { 1, 0, 0, 0, 1 },
+            new List<int> { 0, 1, 0, 1 },
+            new List<int> { 0, 0, 1 },
+            new List<int> { 0, 0, 2 }
         };
         #endregion
-        #region 그리모어
-        weapons[5].Name = "Grimore";
+        #region 대검
+        weapons[5].Name = "GreatSword";
         weapons[5].ATK = 6;
-        weapons[5].moveDistance = 0;
+        weapons[5].moveDistance = 5;
         weapons[5].AttackRange = new List<List<int>>
         {
-            new List<int> { 0, 2, 0, },
-            new List<int> { 0, 1, 0, },
-            new List<int> { 1, 1, 1  },
-            new List<int> { 1, 1, 1  }
+            new List<int> { 1 },
+            new List<int> { 1 },
+            new List<int> { 1 },
+            new List<int> { 1 },
+            new List<int> { 2 }
         };
         #endregion
+        #region 오래된 검
+        weapons[6].Name = "OldSword";
+        weapons[6].ATK = 0;
+        weapons[6].moveDistance = 0;
+        weapons[6].AttackRange = new List<List<int>>
+        {
+            new List<int> { 1 },
+            new List<int> { 1 },
+            new List<int> { 1 },
+            new List<int> { 1 },
+            new List<int> { 2 }
+        };
+        #endregion
+    } // 무기 정보
+    private void LoadWeaponImage()
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weaponImages[i] = Resources.Load<Sprite>("Weapon/" + weapons[i].Name);
+        }
     }
 
     public void NormalAttack()

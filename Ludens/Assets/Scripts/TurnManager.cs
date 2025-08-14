@@ -19,7 +19,6 @@ public class TurnManager : MonoBehaviour
     public static TurnManager Instance { get; private set; } // 싱글톤 패턴
 
     public TurnState state;
-    public Button[] Buttons;
 
     public int playerCount = 1; // 플레이어 수
     public int turnPlayer;      // 턴 플레이어
@@ -29,6 +28,8 @@ public class TurnManager : MonoBehaviour
     public Character[] Players;
     public int moveDistance = 0;
     public int weaponType = 0;
+
+    private InGameUIManager gameUIManager;
 
     private void Awake()
     {
@@ -44,22 +45,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    public void SetTurnStateMove()
-    {
-        SetTurnState(TurnState.Move);
-    }
-
-    public void SetTurnStateAttack()
-    {
-        SetTurnState(TurnState.Attack);
-    }
-
-
-    public void SetMoveDistance(int n)
-    {
-        moveDistance = n;
-    }
-
     public void SetTurnState(TurnState newState)
     {
         state = newState;
@@ -67,11 +52,11 @@ public class TurnManager : MonoBehaviour
         switch (state)
         {
             case TurnState.StartGame:
-                Debug.Log("게임시작 초기화");
+                //Debug.Log("게임시작 초기화");
                 StartCoroutine(HandleStartGame());
                 break;
             case TurnState.Select:
-                Debug.Log($"플레이어{turnPlayer + 1}무기 선택");
+                //Debug.Log($"플레이어{turnPlayer + 1}무기 선택");
                 StartCoroutine(HandleSelect());
                 break;
             case TurnState.Attack:
@@ -91,9 +76,9 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         turnPlayer = 0;
+        gameUIManager = FindObjectOfType<InGameUIManager>();
         SetTurnState(TurnState.StartGame);
     }
-
 
     IEnumerator HandleStartGame()
     {
@@ -102,24 +87,29 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator HandleSelect()
     {
-        foreach(Button button in Buttons) // 버튼 활성화
-        {
-            button.interactable = true;
-        }
+        gameUIManager.ActiveButton(); // 공격 버튼 활성화
         yield break;
     }
     IEnumerator HandleAttack()
     {
+        gameUIManager.InactiveButton(weaponType); // 공격 버튼 비활성화
         Players[turnPlayer].Attack(weaponType);
+        //Debug.Log(weaponType.ToString());
         yield return new WaitForSeconds(1.0f);
-        SetTurnState(TurnState.Move);
+
+        if (Players[turnPlayer].Fixed == true)
+        {
+            SetTurnState(TurnState.EndTurn);
+        }
+        else
+        {
+            SetTurnState(TurnState.Move);
+        }
+
     }
     public IEnumerator HandleMove() 
     {
-        foreach(Button button in Buttons) // 버튼 비활성화
-        {
-            button.interactable = false;
-        }
+
         for (int i = 0; i < moveDistance; i++)
         {
             Players[turnPlayer].move();
