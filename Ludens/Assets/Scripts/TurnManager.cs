@@ -34,6 +34,7 @@ public class TurnManager : MonoBehaviour
 
     private InGameUIManager gameUIManager;
     public GameObject Arrow;
+    [SerializeField]private int AttackIndex = 1;
 
     private void Awake()
     {
@@ -124,7 +125,7 @@ public class TurnManager : MonoBehaviour
         Players[turnPlayer].Attack(weaponType);        
         yield return new WaitForSeconds(1.0f);
 
-        Players.RemoveAll(obj => obj == null); // 죽은 캐릭터 제거
+        //Players.RemoveAll(obj => obj == null); // 죽은 캐릭터 제거
 
         //Debug.Log(weaponType.ToString());
 
@@ -194,7 +195,19 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator HandleTutorialTurnEnd()
     {
-        Players.RemoveAll(obj => obj == null); // 죽은 캐릭터 제거
+        //Players.RemoveAll(obj => obj == null); // 죽은 캐릭터 제거
+
+        for(int i = 0;i < Players.Count; i++)
+        {
+            if (Players[i] == null)
+            {
+                Players.RemoveAt(i);
+                if(i < AttackIndex) 
+                { 
+                    AttackIndex--;                
+                }
+            }
+        }
 
         if(Players.Count == 1) // 한 캐릭터만 남으면
         {
@@ -210,11 +223,18 @@ public class TurnManager : MonoBehaviour
         }
         else
         {
-            turnPlayer = (turnCount / 2 + 1) % (Players.Count - 1);
-            if(turnPlayer == 0)
+            //turnPlayer = (turnCount / 2 + 1) % (Players.Count - 1);
+            //if(turnPlayer == 0)
+            //{
+            //    turnPlayer = Players.Count - 1;
+            //}
+            //turnPlayer = (AttackIndex - 1) % (Players.Count - 1) + 1;
+            turnPlayer = AttackIndex++;
+            if(AttackIndex == playerCount)
             {
-                turnPlayer = Players.Count - 1;
-            }
+                AttackIndex = 1;
+            }         
+
             //Debug.Log(turnPlayer);
         }
         turnCountText.text = $"{turnCount + 1} 턴";

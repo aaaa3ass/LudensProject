@@ -1062,15 +1062,16 @@ MonoBehaviour:
   turnCountText: {fileID: 1420804393}
   Players:
   - {fileID: 1570645176}
-  - {fileID: 896157231}
-  - {fileID: 294149946}
   - {fileID: 1319189754}
   - {fileID: 1584442026}
   - {fileID: 1540325907}
+  - {fileID: 294149946}
+  - {fileID: 896157231}
   moveDistance: 0
   weaponType: 0
   isTutorial: 1
   Arrow: {fileID: 1972674975}
+  AttackIndex: 1
 --- !u!1 &1420804391
 GameObject:
   m_ObjectHideFlags: 0
