@@ -93,9 +93,18 @@ public class TurnManager : MonoBehaviour
     IEnumerator HandleAttack()
     {
         gameUIManager.InactiveButton(weaponType); // 공격 버튼 비활성화
-        Players[turnPlayer].Attack(weaponType);
-        //Debug.Log(weaponType.ToString());
+
+        if(weaponType == 0)
+        {
+            StartCoroutine(HandlePunch());
+            yield break;
+        }
+
+        Players[turnPlayer].Attack(weaponType);        
         yield return new WaitForSeconds(1.0f);
+        
+
+        //Debug.Log(weaponType.ToString());
 
         if (Players[turnPlayer].Fixed == true)
         {
@@ -109,7 +118,6 @@ public class TurnManager : MonoBehaviour
     }
     public IEnumerator HandleMove() 
     {
-
         for (int i = 0; i < moveDistance; i++)
         {
             Players[turnPlayer].move();
@@ -126,6 +134,31 @@ public class TurnManager : MonoBehaviour
         turnPlayer = turnCount % playerCount;// 턴 플레이어 변경
         turnCountText.text = $"{turnCount} 턴"; // 턴 표시
         SetTurnState(TurnState.Select);
+        yield break;
+    }
+
+    IEnumerator HandlePunch()
+    {
+        //Debug.Log("펀치 공격");
+        for(int i = 0; i < moveDistance; i++)
+        {
+            if (Players[turnPlayer].isEnemyInFrontOf())
+            {
+                Players[turnPlayer].Attack(0);
+                yield return new WaitForSeconds(1.0f);
+                break;
+            }
+            Players[turnPlayer].move();
+            yield return new WaitForSeconds(Players[turnPlayer].moveDuration + 0.1f);
+        }
+
+        if (Players[turnPlayer].isEnemyInFrontOf())
+        {
+            Players[turnPlayer].Attack(0);
+            yield return new WaitForSeconds(1.0f);
+        }
+            
+        SetTurnState(TurnState.EndTurn);
         yield break;
     }
 

@@ -191,7 +191,7 @@ public class Character : MonoBehaviour
         Vector2Int AttackPoint = new Vector2Int(); // 공격 지점
         List<List<int>> grid = weapon.AttackRange(weaponType); // 공격 범위
 
-        Vector2Int point = new Vector2Int(0, 0);
+        Vector2Int point = new Vector2Int(0, 0); // 공격 위치
         for(int y = 0;y < grid.Count; y++)
         {
             for(int x = 0;x< grid[y].Count; x++)
@@ -202,7 +202,7 @@ public class Character : MonoBehaviour
                     point.y = y;
                 }
             }
-        }
+        } // 공격 위치 설정
 
         for(int y = 0; y < grid.Count; y++) 
         {
@@ -312,5 +312,18 @@ public class Character : MonoBehaviour
     private void OnApplicationQuit()
     {
         isQuitting = true;
+    }
+
+    public bool isEnemyInFrontOf()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy"); // 적 캐릭터
+        foreach (GameObject enemy in enemies)
+        {
+            if (GetNextPosition(currentPosition, previousPosition) == enemy.GetComponent<Character>().currentPosition) // 다음 위치에 적이 있다
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
