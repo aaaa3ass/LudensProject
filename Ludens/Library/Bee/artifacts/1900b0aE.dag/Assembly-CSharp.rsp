@@ -382,8 +382,8 @@
 "Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/ships/BaseBulletStarter.cs"
 "Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/ships/ExplosionController.cs"
 "Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/Tools.cs"
-"Assets/DestroySelf.cs"
 "Assets/Scripts/Character.cs"
+"Assets/Scripts/DestroySelf.cs"
 "Assets/Scripts/InGameUIManager.cs"
 "Assets/Scripts/Inventory/InventoryButton.cs"
 "Assets/Scripts/Inventory/LoadoutUIManager.cs"
@@ -393,7 +393,6 @@
 "Assets/Scripts/TurnManager.cs"
 "Assets/Scripts/Weapon.cs"
 "Assets/Scripts/WeaponButton.cs"
-"Assets/StageManager.cs"
 -langversion:9.0
 
 /deterministic

@@ -39,6 +39,8 @@ public class Character : MonoBehaviour
     Animator animator;
 
     public Object testAttackPrefab;
+    public Object destroyPrefab;
+    private static bool isQuitting = false;
 
     void Start()
     {
@@ -183,7 +185,7 @@ public class Character : MonoBehaviour
 
     }
     #endregion
-
+    #region 공격 관련
     public void Attack(int weaponType)
     {
         Vector2Int AttackPoint = new Vector2Int(); // 공격 지점
@@ -264,7 +266,11 @@ public class Character : MonoBehaviour
         }
 
     }
-
+    public void Attacked()
+    {
+        HP = 0;
+    }
+    #endregion
     void Update()
     {
         setSprite();
@@ -296,8 +302,15 @@ public class Character : MonoBehaviour
         }
     }
 
-    public void Attacked()
+    private void OnDestroy()
     {
-        HP = 0;
+        if(!isQuitting)
+        {
+            Instantiate(destroyPrefab,gameObject.transform.position,gameObject.transform.rotation);
+        }
+    }
+    private void OnApplicationQuit()
+    {
+        isQuitting = true;
     }
 }
