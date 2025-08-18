@@ -391,6 +391,7 @@
 "Assets/Scripts/SceneChange.cs"
 "Assets/Scripts/TileManager.cs"
 "Assets/Scripts/TurnManager.cs"
+"Assets/Scripts/TutorialManager.cs"
 "Assets/Scripts/Weapon.cs"
 "Assets/Scripts/WeaponButton.cs"
 -langversion:9.0

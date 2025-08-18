@@ -293,7 +293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 478940958}
-  - component: {fileID: 478940957}
+  - component: {fileID: 478940959}
   m_Layer: 0
   m_Name: TutorialManager
   m_TagString: Untagged
@@ -301,18 +301,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &478940957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478940956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c93cb784269bbca44b771843d924e1a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &478940958
 Transform:
   m_ObjectHideFlags: 0
@@ -328,6 +316,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &478940959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478940956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e12c3f38edf9594884baf99ecb125e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &516198710 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1664426049794907117, guid: 07f9b7d9807c7c843998690c899e3921, type: 3}
@@ -993,8 +993,13 @@ MonoBehaviour:
   Players:
   - {fileID: 1570645176}
   - {fileID: 896157231}
+  - {fileID: 294149946}
+  - {fileID: 1319189754}
+  - {fileID: 1584442026}
+  - {fileID: 1540325907}
   moveDistance: 0
   weaponType: 0
+  isTutorial: 1
 --- !u!1 &1420804391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,7 +1070,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "0 \uD134"
+  m_Text: "1 \uD134"
 --- !u!222 &1420804394
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1299,7 +1304,7 @@ GameObject:
   - component: {fileID: 1570645176}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

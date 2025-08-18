@@ -7,6 +7,7 @@ public class InGameUIManager : MonoBehaviour
 {
     WeaponInventory weaponinventory;
     Weapon weaponClass;
+    TurnManager turnManager;
 
     public GameObject weaponSlotPrefab; // 무기 버튼 프리팹
     public Transform[] weaponSlotParent; // 무기 버튼 위치
@@ -18,6 +19,7 @@ public class InGameUIManager : MonoBehaviour
     {
         weaponinventory = FindObjectOfType<WeaponInventory>();
         weaponClass = FindObjectOfType<Weapon>();
+        turnManager = FindObjectOfType<TurnManager>();
         InitiateUI();
     }
 
@@ -41,7 +43,10 @@ public class InGameUIManager : MonoBehaviour
 
     public void InactiveButton(int weaponNumber)
     {
-        usedWeapon = weaponNumber;
+        if (turnManager.Players[turnManager.turnPlayer].tag == "Player")
+        {
+            usedWeapon = weaponNumber;
+        }
         foreach (Transform t in weaponSlotParent)
         {
             t.GetComponentInChildren<Button>().interactable = false;

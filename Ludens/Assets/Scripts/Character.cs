@@ -251,14 +251,26 @@ public class Character : MonoBehaviour
                     } // 공격 위치 표시
 
                     #region 적 히트
-                    GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-                    foreach(GameObject enemy in enemies)
+                    if(gameObject.tag == "Player")
                     {
-                        if(AttackPoint == enemy.GetComponent<Character>().currentPosition)
+                        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+                        foreach(GameObject enemy in enemies)
                         {
-                            enemy.GetComponent<Character>().Attacked();
+                            if(AttackPoint == enemy.GetComponent<Character>().currentPosition)
+                            {
+                                enemy.GetComponent<Character>().Attacked();
+                            }
                         }
                     }
+                    if(gameObject.tag == "Enemy")
+                    {
+                        GameObject player = GameObject.FindGameObjectWithTag("Player");
+                        if(AttackPoint == player.GetComponent<Character>().currentPosition)
+                        {
+                            player.GetComponent<Character>().Attacked();
+                        }
+                    }
+
                     #endregion
 
                 }
