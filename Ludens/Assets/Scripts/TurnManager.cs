@@ -72,7 +72,7 @@ public class TurnManager : MonoBehaviour
                 StartCoroutine(HandleMove());
                 break;
             case TurnState.EndTurn:
-                StartCoroutine(HandleTurnEnd());
+                StartCoroutine(HandleEndTurn());
                 break;
             case TurnState.EndGame:
                 StartCoroutine(HandleEndGame());
@@ -122,18 +122,16 @@ public class TurnManager : MonoBehaviour
         }
         #endregion
 
-        Players[turnPlayer].Attack(weaponType);        
+        Players[turnPlayer].Attack(weaponType); // 턴 플레이어 공격
         yield return new WaitForSeconds(1.0f);
 
         //Players.RemoveAll(obj => obj == null); // 죽은 캐릭터 제거
 
-        //Debug.Log(weaponType.ToString());
-
-        if (Players[turnPlayer].Fixed == true)
+        if (Players[turnPlayer].Fixed == true) // 고정된 캐릭터
         {
             SetTurnState(TurnState.EndTurn);
         }
-        else if(Players.Count == 1)
+        else if(isNoEnemies()) // 적 모두 제거
         { 
             SetTurnState(TurnState.EndGame);
         }
@@ -145,23 +143,25 @@ public class TurnManager : MonoBehaviour
     }
     public IEnumerator HandleMove() 
     {
-        for (int i = 0; i < moveDistance; i++)
+        for (int i = 0; i < moveDistance; i++) // 이동 칸 수만큼
         {
-            Players[turnPlayer].move();
+            Players[turnPlayer].move(); // 한 칸 이동
             yield return new WaitForSeconds(Players[turnPlayer].moveDuration + 0.1f);
         }
 
-        SetTurnState(TurnState.EndTurn);
+        SetTurnState(TurnState.EndTurn); // 엔드 페이즈
         yield break;
     }
 
-    IEnumerator HandleTurnEnd()
+    IEnumerator HandleEndTurn()
     {
-        if(isTutorial)
+        #region 튜토리얼
+        if (isTutorial)
         {
-            StartCoroutine(HandleTutorialTurnEnd());
+            StartCoroutine(HandleTutorialEndTurn());
             yield break;
         }
+        #endregion
         turnCount++;                            // 턴 증가
         turnPlayer = turnCount % playerCount;// 턴 플레이어 변경
         turnCountText.text = $"{turnCount + 1} 턴"; // 턴 표시
@@ -193,11 +193,11 @@ public class TurnManager : MonoBehaviour
         SetTurnState(TurnState.EndTurn);
         yield break;
     }
-    IEnumerator HandleTutorialTurnEnd()
+    IEnumerator HandleTutorialEndTurn()
     {
-        //Players.RemoveAll(obj => obj == null); // 죽은 캐릭터 제거
+        //Players.RemoveAll(obj => obj == null); 
 
-        for(int i = 0;i < Players.Count; i++)
+        for(int i = 0;i < Players.Count; i++) 
         {
             if (Players[i] == null)
             {
@@ -207,9 +207,9 @@ public class TurnManager : MonoBehaviour
                     AttackIndex--;                
                 }
             }
-        }
+        } // 죽은 캐릭터 제거
 
-        if(Players.Count == 1) // 한 캐릭터만 남으면
+        if (Players.Count == 1) // 한 캐릭터만 남으면
         {
             SetTurnState(TurnState.EndGame);
             yield break;
@@ -234,7 +234,6 @@ public class TurnManager : MonoBehaviour
             {
                 AttackIndex = 1;
             }         
-
             //Debug.Log(turnPlayer);
         }
         turnCountText.text = $"{turnCount + 1} 턴";
@@ -245,6 +244,18 @@ public class TurnManager : MonoBehaviour
     {
         Debug.Log("Game Over");
         yield break;
+    }
+
+    bool isNoEnemies()
+    {
+        for (int i = 1; i < Players.Count; i++)
+        {
+            if (Players[i] != null)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

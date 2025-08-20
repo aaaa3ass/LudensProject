@@ -11,10 +11,6 @@ public class TutorialManager : MonoBehaviour
     }
     void Update()
     {
-        //if (turnManager.turnCount % 2 == 1)
-        //{
-        //    turnManager.weaponType = 3; // È¯µµ
-        //    turnManager.SetTurnState(TurnState.Attack);
-        //}
+
     }
 }
