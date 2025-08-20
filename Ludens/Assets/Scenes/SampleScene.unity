@@ -328,6 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e12c3f38edf9594884baf99ecb125e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highlight: {fileID: 8386057927469139406, guid: e96d249383e22324287a4532b3978f4c, type: 3}
 --- !u!224 &516198710 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1664426049794907117, guid: 07f9b7d9807c7c843998690c899e3921, type: 3}
@@ -394,7 +395,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
