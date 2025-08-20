@@ -33,6 +33,7 @@ public class TurnManager : MonoBehaviour
     public bool isTutorial = false;
 
     private InGameUIManager gameUIManager;
+    private TutorialManager tutorialManager;
     public GameObject Arrow;
     [SerializeField]private int AttackIndex = 1;
 
@@ -85,6 +86,7 @@ public class TurnManager : MonoBehaviour
     {
         turnPlayer = 0;
         gameUIManager = FindObjectOfType<InGameUIManager>();
+        tutorialManager = FindObjectOfType<TutorialManager>();
         SetTurnState(TurnState.StartGame);
     }
 
@@ -95,20 +97,39 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator HandleSelect()
     {
+        #region 턴 플레이어 표시
         Arrow.transform.parent = Players[turnPlayer].transform;
         Arrow.transform.position = Players[turnPlayer].transform.localPosition;
+        #endregion
+        #region 튜토리얼
+        if (isTutorial)
+        {
+            if (Players[turnPlayer].tag == "Player")
+            {
+                if (turnCount == 0 || turnCount == 2 || turnCount == 4)
+                {
+                    tutorialManager.TutorialRoutine(turnCount); // 튜토리얼 강제 조작
+                }
+                else
+                {
+                    gameUIManager.ActiveButton(); // 공격 버튼 활성화
+                }
+            }
+            else
+            {
+                weaponType = 3; // 환도
+                SetTurnState(TurnState.Attack);
+            }
+            yield break;
+        }
+        #endregion
+
         if (Players[turnPlayer].tag == "Player") // 플레이어 턴일 때
         {
             gameUIManager.ActiveButton(); // 공격 버튼 활성화
             yield break;
         }
-        #region 튜토리얼
-        if (isTutorial)
-        {
-            weaponType = 3; // 환도
-            SetTurnState (TurnState.Attack);
-        }
-        #endregion
+
     }
     IEnumerator HandleAttack()
     {
