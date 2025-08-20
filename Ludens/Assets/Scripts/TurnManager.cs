@@ -223,9 +223,17 @@ public class TurnManager : MonoBehaviour
             if (Players[i] == null)
             {
                 Players.RemoveAt(i);
-                if(i < AttackIndex) 
-                { 
-                    AttackIndex--;                
+                //if(i < AttackIndex) 
+                //{ 
+                //    AttackIndex--;
+                //}
+                if(i <= AttackIndex)
+                {
+                    AttackIndex--;
+                    if(AttackIndex == 0)
+                    {
+                        AttackIndex  = 1;
+                    }
                 }
             }
         } // 죽은 캐릭터 제거
@@ -240,21 +248,15 @@ public class TurnManager : MonoBehaviour
         if(turnCount % 2 == 0)
         {
             turnPlayer = 0;
-            //Debug.Log("0");
         }
         else
         {
-            //turnPlayer = (turnCount / 2 + 1) % (Players.Count - 1);
-            //if(turnPlayer == 0)
+            turnPlayer = AttackIndex;
+            AttackIndex = AttackIndex % (Players.Count-1) + 1;
+            //if(AttackIndex == playerCount)
             //{
-            //    turnPlayer = Players.Count - 1;
-            //}
-            //turnPlayer = (AttackIndex - 1) % (Players.Count - 1) + 1;
-            turnPlayer = AttackIndex++;
-            if(AttackIndex == playerCount)
-            {
-                AttackIndex = 1;
-            }         
+            //    AttackIndex = 1;
+            //}         
             //Debug.Log(turnPlayer);
         }
         turnCountText.text = $"{turnCount + 1} 턴";
