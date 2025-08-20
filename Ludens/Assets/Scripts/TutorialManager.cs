@@ -51,9 +51,9 @@ public class TutorialManager : MonoBehaviour
     public void TutorialRoutine(int turnCount)
     {
         int weaponNumber = 0;
-        if ( turnCount == 0 ) { weaponNumber = 3; }
-        if ( turnCount == 2 ) { weaponNumber = 0; }
-        if ( turnCount == 4 ) { weaponNumber = 5; }
+        if ( turnCount == 0 ) { weaponNumber = 3; } // 첫 턴 환도
+        if ( turnCount == 2 ) { weaponNumber = 0; } // 둘째 턴 주먹
+        if ( turnCount == 4 ) { weaponNumber = 5; } // 셋째 턴 대검
 
         foreach (Transform t in gameUIManager.weaponSlotParent)
         {

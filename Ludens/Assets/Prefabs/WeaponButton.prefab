@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2056439160711584940}
   - component: {fileID: 5464205486895933040}
   - component: {fileID: 3298633504284399952}
+  - component: {fileID: 3975757158877960879}
   m_Layer: 5
   m_Name: WeaponButton
   m_TagString: Untagged
@@ -148,6 +149,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponNumber: 0
+--- !u!114 &3975757158877960879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46293616057689303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6edc21a7ce81c7946a98b39d8d832d08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3247295307323858798
 GameObject:
   m_ObjectHideFlags: 0

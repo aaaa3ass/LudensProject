@@ -382,6 +382,7 @@
 "Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/ships/BaseBulletStarter.cs"
 "Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/ships/ExplosionController.cs"
 "Assets/2D Pixel Spaceships (2 Small Ships + Explosions)/Scripts/Tools.cs"
+"Assets/Scripts/ButtonHoverAction.cs"
 "Assets/Scripts/Character.cs"
 "Assets/Scripts/DestroySelf.cs"
 "Assets/Scripts/InGameUIManager.cs"

@@ -40,6 +40,7 @@ public class Character : MonoBehaviour
 
     public Object testAttackPrefab;
     public Object destroyPrefab;
+    public Object AttackRangePrefab;
     private static bool isQuitting = false;
 
     void Start()
@@ -214,11 +215,11 @@ public class Character : MonoBehaviour
                     int relativeY = y - point.y;
                     AttackPoint = new Vector2Int(currentPosition.x + relativeX, currentPosition.y + relativeY);
 
-                    if(currectDirection == CharacterDirection.Left)
+                    if (currectDirection == CharacterDirection.Left)
                     {
                         AttackPoint.x -= currentPosition.x;
                         AttackPoint.y -= currentPosition.y;
-                        AttackPoint = new Vector2Int(AttackPoint.y,-AttackPoint.x);
+                        AttackPoint = new Vector2Int(AttackPoint.y, -AttackPoint.x);
                         AttackPoint.x += currentPosition.x;
                         AttackPoint.y += currentPosition.y;
                     }   // 왼쪽 공격
@@ -230,7 +231,7 @@ public class Character : MonoBehaviour
                         AttackPoint.x += currentPosition.x;
                         AttackPoint.y += currentPosition.y;
                     } // 오른쪽 공격
-                    if(currectDirection == CharacterDirection.Down)
+                    if (currectDirection == CharacterDirection.Down)
                     {
                         AttackPoint.x -= currentPosition.x;
                         AttackPoint.y -= currentPosition.y;
@@ -245,42 +246,122 @@ public class Character : MonoBehaviour
                         0
                         ); // 실제 위치
 
-                    if(testAttackPrefab)
+                    if (testAttackPrefab)
                     {
                         Instantiate(testAttackPrefab, spawnPos, Quaternion.identity);
                     } // 공격 위치 표시
 
-                    #region 적 히트
-                    if(gameObject.tag == "Player")
-                    {
-                        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-                        foreach(GameObject enemy in enemies)
-                        {
-                            if(AttackPoint == enemy.GetComponent<Character>().currentPosition)
-                            {
-                                enemy.GetComponent<Character>().Attacked();
-                            }
-                        }
-                    }
-                    if(gameObject.tag == "Enemy")
-                    {
-                        GameObject player = GameObject.FindGameObjectWithTag("Player");
-                        if(AttackPoint == player.GetComponent<Character>().currentPosition)
-                        {
-                            player.GetComponent<Character>().Attacked();
-                        }
-                    }
-
-                    #endregion
+                    hitEnemy(AttackPoint);
 
                 }
             }
         }
-
     }
+
+    private void hitEnemy(Vector2Int AttackPoint)
+    {
+        if (gameObject.tag == "Player")
+        {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject enemy in enemies)
+            {
+                if (AttackPoint == enemy.GetComponent<Character>().currentPosition)
+                {
+                    enemy.GetComponent<Character>().Attacked();
+                }
+            }
+        }
+        if (gameObject.tag == "Enemy")
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (AttackPoint == player.GetComponent<Character>().currentPosition)
+            {
+                player.GetComponent<Character>().Attacked();
+            }
+        }
+    }
+
     public void Attacked()
     {
         HP = 0;
+    }
+
+    public void DisplayAttackRange(int weaponType)
+    {
+        Vector2Int AttackPoint = new Vector2Int(); // 공격 지점
+        List<List<int>> grid = weapon.AttackRange(weaponType); // 공격 범위
+
+        Vector2Int point = new Vector2Int(0, 0); // 공격 위치
+        for (int y = 0; y < grid.Count; y++)
+        {
+            for (int x = 0; x < grid[y].Count; x++)
+            {
+                if (grid[y][x] == 2)
+                {
+                    point.x = x;
+                    point.y = y;
+                }
+            }
+        } // 공격 위치 설정
+
+        for (int y = 0; y < grid.Count; y++)
+        {
+            for (int x = 0; x < grid[y].Count; x++)
+            {
+                if (grid[y][x] == 1)
+                {
+                    int relativeX = x - point.x;
+                    int relativeY = y - point.y;
+                    AttackPoint = new Vector2Int(currentPosition.x + relativeX, currentPosition.y + relativeY);
+
+                    if (currectDirection == CharacterDirection.Left)
+                    {
+                        AttackPoint.x -= currentPosition.x;
+                        AttackPoint.y -= currentPosition.y;
+                        AttackPoint = new Vector2Int(AttackPoint.y, -AttackPoint.x);
+                        AttackPoint.x += currentPosition.x;
+                        AttackPoint.y += currentPosition.y;
+                    }   // 왼쪽 공격
+                    if (currectDirection == CharacterDirection.Right)
+                    {
+                        AttackPoint.x -= currentPosition.x;
+                        AttackPoint.y -= currentPosition.y;
+                        AttackPoint = new Vector2Int(-AttackPoint.y, AttackPoint.x);
+                        AttackPoint.x += currentPosition.x;
+                        AttackPoint.y += currentPosition.y;
+                    } // 오른쪽 공격
+                    if (currectDirection == CharacterDirection.Down)
+                    {
+                        AttackPoint.x -= currentPosition.x;
+                        AttackPoint.y -= currentPosition.y;
+                        AttackPoint = new Vector2Int(-AttackPoint.x, -AttackPoint.y);
+                        AttackPoint.x += currentPosition.x;
+                        AttackPoint.y += currentPosition.y;
+                    }   // 아래 공격
+
+                    Vector3 spawnPos = new Vector3(
+                        AttackPoint.x,
+                        -AttackPoint.y,
+                        0
+                        ); // 실제 위치
+
+                    if (testAttackPrefab)
+                    {
+                        Object obj = Instantiate(testAttackPrefab, spawnPos, Quaternion.identity);
+                        obj.GetComponent<DestroySelf>().destroyTime = 0.001f;
+
+                        SpriteRenderer[] renderers = obj.GetComponentsInChildren<SpriteRenderer>();
+                        foreach (SpriteRenderer renderer in renderers)
+                        {
+                            Color c = renderer.color;
+                            c.a = 0.5f;
+                            renderer.color = c;
+                        }
+                    } // 공격 위치 표시
+
+                }
+            }
+        }
     }
     #endregion
     void Update()
